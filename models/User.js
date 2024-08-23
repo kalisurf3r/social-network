@@ -25,6 +25,12 @@ const UserSchema = new Schema({
         ref: 'User'
         }
     ]
+    },
+    {
+      toJSON: {
+        virtuals: true,
+      },
+      id: false,
     });
 
 const User = model('User', UserSchema);

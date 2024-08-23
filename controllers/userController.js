@@ -58,7 +58,7 @@ async deleteUser (req, res) {
 // * add a friend to a user's friend list
 async addFriend (req, res) {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { $addToSet: { friends: req.params.friendId } }, { new: true });
+        const user = await User.findByIdAndUpdate(req.params.id, { $addToSet: { friends: req.params.friendsId } }, { new: true });
         res.json(user);
     } catch (err) {
         res.status(400).json(err);
@@ -68,7 +68,7 @@ async addFriend (req, res) {
 // * remove a friend from a user's friend list
 async removeFriend (req, res) {
     try {
-        const user = await User.findByIdAndUpdate(req.params.id, { $pull: { friends: req.params.friendId } }, { new: true });
+        const user = await User.findByIdAndUpdate(req.params.id, { $pull: { friends: req.params.friendsId } }, { new: true });
         res.json(user);
     } catch (err) {
         res.status(400).json(err);

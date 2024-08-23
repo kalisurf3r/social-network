@@ -56,10 +56,10 @@ async deleteThought (req, res) {
 // * add a reaction to a thought
 async addReaction (req, res) {
     try {
-        const reaction = await Reaction.create(req.body);
-        await Thought.findByIdAndUpdate(req.params.thoughtId, { $push: { reactions: reaction._id } }, { new: true });
-        res.json(reaction);
+        const newThought = await Thought.findByIdAndUpdate(req.params.thoughtId, { $addToSet: { reactions: req.body } }, { new: true });
+        res.json(newThought);
     } catch (err) {
+        console.log(err);
         res.status(400).json(err);
     }
 },
@@ -67,9 +67,8 @@ async addReaction (req, res) {
 // * delete a reaction from a thought
 async deleteReaction (req, res) {
     try {
-        await Reaction.findByIdAndDelete(req.params.reactionId);
-        await Thought.findByIdAndUpdate(req.params.thoughtId, { $pull: { reactions: ObjectId(req.params.reactionId) } }, { new: true });
-        res.json({ message: 'Reaction deleted!' });
+        const removedThought = await Thought.findByIdAndUpdate(req.params.thoughtId, { $pull: { reactions: req.body } }, { new: true });
+        res.json(removedThought);
     } catch (err) {
         res.status(400).json(err);
     }
